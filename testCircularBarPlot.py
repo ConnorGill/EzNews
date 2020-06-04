@@ -8,13 +8,13 @@ import seaborn as sns
 df = pd.read_csv("https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv")
 #~~~~~~~~~~~Test~~~~~~~#
 
-N = 1000
+N = 2000
 bottom = 8
-max_height = 4
+max_height = .5
 
 theta = np.linspace(0.0, 2 * np.pi, N, endpoint=False)
 radii = max_height*np.random.rand(N)
-width = (2*np.pi) / N
+width = (8*np.pi) / N
 
 ax = plt.subplot(111, polar=True)
 bars = ax.bar(theta, radii, width=width, bottom=bottom)
