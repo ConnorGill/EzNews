@@ -8,19 +8,19 @@ import mpld3
 import MySQLdb
 
 #~~~~~~~~~~~Importing mySQL Data~~~~~~~#
-#db = MySQLdb.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
-#cursor = db.cursor()
+db = MySQLdb.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
+cursor = db.cursor()
 #sql1 = "SELECT theta FROM rehoboamSchema.rehoboamFull"
 #cursor.execute(sql1)
 
 #thetaArray = list(cursor.fetchall())
 #thetaSQL = np.array(thetaArray).ravel() #converts to contiguous list
 
-#sql2 = "SELECT radii FROM rehoboamSchema.rehoboamFull"
-#cursor.execute(sql2)
+sql2 = "SELECT vw_rehoboam.radii FROM rehoboamSchema.vw_rehoboam"
+cursor.execute(sql2)
 
-#radiiArray = list(cursor.fetchall())
-#radiiSQL = np.array(radiiArray).ravel() #converts to contiguous list
+radiiArray = list(cursor.fetchall())
+radiiSQL = np.array(radiiArray).ravel() #converts to contiguous list
 #~~~~~~~~~~~mySQL~~~~~~~#
 
 N = 2000    #Numbers of bars
@@ -30,17 +30,25 @@ width = (8*np.pi) / N   #width of each bar
 
 #~~~~~~Original Calculation of theta & radii~~~~~#
 theta = np.linspace(0.0, 2 * np.pi, N, endpoint=False) #array of indexes for each bar
-radii = max_height*np.random.rand(N)    #array of heights/radii for each bar
+#radii = max_height*np.random.rand(N)    #array of heights/radii for each bar
 #~~~~~~~~~~~~~~~~~~~~#
 
 #Sets bars and plot
 fig, ax = plt.subplots()
 ax = plt.subplot(111, polar=True) #sets to circle
-bars = ax.bar(theta, radii, width=width, bottom=bottom, facecolor='black') 
+bars = ax.bar(theta, radiiSQL, width=width, bottom=bottom, facecolor='black') 
 
 #~~~~~~Animation Attempt~~~~~~#
 def animate(i):
-    radii = max_height*np.random.rand(N)
+    db = MySQLdb.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
+    cursor = db.cursor()
+    sql3 = "SELECT vw_rehoboam.radii FROM rehoboamSchema.vw_rehoboam"
+    cursor.execute(sql3)
+    radiiArray2 = list(cursor.fetchall())
+    radiiSQL = np.array(radiiArray2).ravel() #converts to contiguous list
+    radii = radiiSQL #max_height*np.random.rand(N)
+    #print(radii)
+    db.close()
     for rect, y in zip(bars, radii):
         rect.set_height(y)
     return bars
