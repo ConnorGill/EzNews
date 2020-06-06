@@ -36,11 +36,11 @@ theta = np.linspace(0.0, 2 * np.pi, N, endpoint=False) #array of indexes for eac
 
 #Sets bars and plot
 fig, ax = plt.subplots()
-ax = plt.subplot(111, polar=True) #sets to circle
+#ax = plt.subplot(111, polar=True) #sets to circle
 bars = ax.bar(theta, radiiSQL, width=width, bottom=bottom, facecolor='black') 
 
 #~~~~~~Radii Noise Generation Function~~~#
-def radiiNoise():
+def radiiNoiseGen():
     db = MySQLdb.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
     sql4 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = RAND()*(.5-.025) #+.025 END")
@@ -51,9 +51,7 @@ def radiiNoise():
     db.commit()
     db.close()
 
-#~~~~~~Animation Function~~~~~~#
-def animate(i):
-    radiiNoise()
+def radiiDBPull():
     #~~~Gathering newest radii data from DB~~~#
     db = MySQLdb.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
@@ -62,19 +60,25 @@ def animate(i):
     radiiArray2 = list(cursor.fetchall())
     radiiSQL = np.array(radiiArray2).ravel() #converts to contiguous list
     db.close()
+    return radiiSQL
     #~~~Close DB connection so data can be refreshed~~~#
+
+#~~~~~~Animation Function~~~~~~#
+def animate(i):
+    radiiNoiseGen() #Calls noise generation function
+    radiiSQL = radiiDBPull() #Calls radii db pull function
     for rect, y in zip(bars, radiiSQL):
         rect.set_height(y) #Updating height of every bar to latest DB data
     return bars
 
 #frames = 100
-anim = animation.FuncAnimation(fig, animate, blit=True, interval=10, repeat=True)
+anim = animation.FuncAnimation(fig, animate, blit=True, interval=0,repeat=True)
 
 #~~~~~#
 
 # Plot Display
-plt.title('Rehoboam', fontsize=22)
-plt.axis('off')
+#plt.title('Rehoboam', fontsize=22)
+#plt.axis('off')
 plt.show()
 
 
