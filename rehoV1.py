@@ -24,7 +24,7 @@ radiiSQL = np.array(radiiArray).ravel() #converts to contiguous list
 db.close()
 #~~~~~~~~~~~mySQL~~~~~~~#
 
-N = 2000    #Numbers of bars
+N = 1000    #Numbers of bars
 bottom = 8  #Where bars bottoms begin
 max_height = .5 
 width = (8*np.pi) / N   #width of each bar
@@ -36,7 +36,7 @@ theta = np.linspace(0.0, 2 * np.pi, N, endpoint=False) #array of indexes for eac
 
 #Sets bars and plot
 fig, ax = plt.subplots()
-#ax = plt.subplot(111, polar=True) #sets to circle
+ax = plt.subplot(111, polar=True) #sets to circle
 bars = ax.bar(theta, radiiSQL, width=width, bottom=bottom, facecolor='black') 
 
 #~~~~~~Radii Noise Generation Function~~~#
@@ -46,13 +46,13 @@ def radiiNoiseGen():
     sql4 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = RAND()*(.5-.025) #+.025 END")
     cursor.execute(sql4)
     db.commit()
-    sql2 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = RADII * 2 WHERE RADII < .00025")
-    cursor.execute(sql2)
-    db.commit()
+    #sql2 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = RADII * 2 WHERE RADII < .00025")
+    #cursor.execute(sql2)
+    #db.commit()
     db.close()
 
+#~~~Gathering newest radii data from DB~~~#
 def radiiDBPull():
-    #~~~Gathering newest radii data from DB~~~#
     db = MySQLdb.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
     sql3 = "SELECT vw_rehoboam.radii FROM rehoboamSchema.vw_rehoboam"
@@ -67,6 +67,7 @@ def radiiDBPull():
 def animate(i):
     radiiNoiseGen() #Calls noise generation function
     radiiSQL = radiiDBPull() #Calls radii db pull function
+    #radiiSQL = max_height*np.random.rand(N)
     for rect, y in zip(bars, radiiSQL):
         rect.set_height(y) #Updating height of every bar to latest DB data
     return bars
@@ -78,7 +79,7 @@ anim = animation.FuncAnimation(fig, animate, blit=True, interval=0,repeat=True)
 
 # Plot Display
 #plt.title('Rehoboam', fontsize=22)
-#plt.axis('off')
+plt.axis('off')
 plt.show()
 
 
