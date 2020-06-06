@@ -21,6 +21,7 @@ cursor.execute(sql2)
 
 radiiArray = list(cursor.fetchall())
 radiiSQL = np.array(radiiArray).ravel() #converts to contiguous list
+db.close()
 #~~~~~~~~~~~mySQL~~~~~~~#
 
 N = 2000    #Numbers of bars
@@ -38,23 +39,36 @@ fig, ax = plt.subplots()
 ax = plt.subplot(111, polar=True) #sets to circle
 bars = ax.bar(theta, radiiSQL, width=width, bottom=bottom, facecolor='black') 
 
-#~~~~~~Animation Attempt~~~~~~#
+#~~~~~~Radii Noise Generation Function~~~#
+def radiiNoise():
+    db = MySQLdb.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
+    cursor = db.cursor()
+    sql4 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = RAND()*(.5-.025) #+.025 END")
+    cursor.execute(sql4)
+    db.commit()
+    sql2 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = RADII * 2 WHERE RADII < .00025")
+    cursor.execute(sql2)
+    db.commit()
+    db.close()
+
+#~~~~~~Animation Function~~~~~~#
 def animate(i):
+    radiiNoise()
+    #~~~Gathering newest radii data from DB~~~#
     db = MySQLdb.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
     sql3 = "SELECT vw_rehoboam.radii FROM rehoboamSchema.vw_rehoboam"
     cursor.execute(sql3)
     radiiArray2 = list(cursor.fetchall())
     radiiSQL = np.array(radiiArray2).ravel() #converts to contiguous list
-    radii = radiiSQL #max_height*np.random.rand(N)
-    #print(radii)
     db.close()
-    for rect, y in zip(bars, radii):
-        rect.set_height(y)
+    #~~~Close DB connection so data can be refreshed~~~#
+    for rect, y in zip(bars, radiiSQL):
+        rect.set_height(y) #Updating height of every bar to latest DB data
     return bars
 
 #frames = 100
-anim = animation.FuncAnimation(fig, animate, blit=True, interval=200, repeat=True)
+anim = animation.FuncAnimation(fig, animate, blit=True, interval=10, repeat=True)
 
 #~~~~~#
 
@@ -62,10 +76,6 @@ anim = animation.FuncAnimation(fig, animate, blit=True, interval=200, repeat=Tru
 plt.title('Rehoboam', fontsize=22)
 plt.axis('off')
 plt.show()
-
-
-
-
 
 
 #Printing radii values out to CSV
