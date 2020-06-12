@@ -31,13 +31,12 @@ def radiiNoiseGen():
     db.close()
 
 
-radiiNoiseGen()
-sql2csv()
-"""
+#radiiNoiseGen()
+#sql2csv()
+
 count = 0
-while (count < 100):
+while (count < 1000):
     radiiNoiseGen()
     sql2csv()
     count = count + 1
     print(count)
-"""
