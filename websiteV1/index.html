@@ -15,6 +15,7 @@
 
 				<!-- Header -->
 					<header id="header">
+						
 						<div class="content">
 							<div class="inner">
 								<h1>News Tracker</h1>
@@ -35,7 +36,7 @@
 
 				<!-- Main -->
 					<div id="main">
-
+						
 						<!-- Intro -->
 							<article id="intro">
 								<h2 class="major">Intro</h2>
@@ -117,17 +118,18 @@
 				var margin = {top: 10, right: 10, bottom: 100, left: 10},
 					width = 540 - margin.left - margin.right,
 					height = 540 - margin.top - margin.bottom,
-					innerRadius = 200,
+					innerRadius = 150,
 					outerRadius = Math.min(width, height) / 2;   // the outerRadius goes from the middle of the SVG area to the border
 				
 				// append the svg object to the body of the page
 				var svg = d3.select("#my_dataviz")
 				.append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
+				.attr("width", '100%')
+				.attr("height", '100%')
+				.attr('viewBox','0 0 '+Math.min(width,height)+' '+Math.min(width,height))
+				.attr('preserveAspectRatio','xMinYMin')
 				.append("g")
-					.attr("transform", "translate(" + width / 2 + "," + ( height/2+25 )+ ")"); // Add 100 on Y translation, cause upper bars are longer
-				
+				.attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
 				
 				d3.csv("rehoTestData.csv", function(data) {
 				
@@ -160,7 +162,7 @@
 				});
 
 				var inter = setInterval(function() {
-                	//updateData();
+                	updateData();
 				}, 2000);
 				
 				// ** Update data section (Called from the onclick)

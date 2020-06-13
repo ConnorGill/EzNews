@@ -5,7 +5,7 @@ import csv
 def radiiNoiseGen():
     db = pymysql.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
-    sql4 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = FLOOR(RAND()*(5000-100) + 100) #END")
+    sql4 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = FLOOR(RAND()*(1000-100) + 100) #END")
     cursor.execute(sql4)
     db.commit()
     #sql2 = ("UPDATE rehoboamSchema.rehoboamFull SET RADII = RADII * 2 WHERE RADII < .00025")

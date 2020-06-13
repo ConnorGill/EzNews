@@ -1268,7 +1268,7 @@ input, select, textarea {
 			-ms-transition: opacity 0.325s ease-in-out;
 			transition: opacity 0.325s ease-in-out;
 			position: relative;
-			margin-top: 3.5rem;
+			margin-top: 1.5rem;
 		}
 
 			#header > *:before {
@@ -1277,7 +1277,7 @@ input, select, textarea {
 				position: absolute;
 				top: calc(-3.5rem - 1px);
 				left: calc(50% - 1px);
-				width: 1px;
+				width: 0px;
 				height: calc(3.5rem + 1px);
 				background: #ffffff;
 			}
@@ -1306,7 +1306,7 @@ input, select, textarea {
 			border-style: solid;
 			border-color: #ffffff;
 			border-top-width: 0px;
-			border-bottom-width: 1px;
+			border-bottom-width: 0px;
 			max-width: 100%;
 		}
 
@@ -1319,7 +1319,7 @@ input, select, textarea {
 				-webkit-transition-delay: 0.25s;
 				-ms-transition-delay: 0.25s;
 				transition-delay: 0.25s;
-				padding-top: 2rem;
+				padding-top: 0rem;
 				padding-right: 2rem;
 				padding-bottom: 3rem;
 				padding-left: 2rem;
