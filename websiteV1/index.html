@@ -18,8 +18,9 @@
 						<div class="content">
 							<div class="inner">
 								<h1>News Tracker</h1>
-								<div id="my_dataviz"></div>
+								<p>Only the most important and relevant news from the last month*</p>
 							</div>
+							<div id="my_dataviz"></div>
 						</div>
 						<nav>
 							<ul>
@@ -114,9 +115,9 @@
 
 				// set the dimensions and margins of the graph
 				var margin = {top: 10, right: 10, bottom: 100, left: 10},
-					width = 460 - margin.left - margin.right,
-					height = 460 - margin.top - margin.bottom,
-					innerRadius = 160,
+					width = 540 - margin.left - margin.right,
+					height = 540 - margin.top - margin.bottom,
+					innerRadius = 200,
 					outerRadius = Math.min(width, height) / 2;   // the outerRadius goes from the middle of the SVG area to the border
 				
 				// append the svg object to the body of the page
@@ -125,7 +126,7 @@
 					.attr("width", width + margin.left + margin.right)
 					.attr("height", height + margin.top + margin.bottom)
 				.append("g")
-					.attr("transform", "translate(" + width / 2 + "," + ( height/2+100 )+ ")"); // Add 100 on Y translation, cause upper bars are longer
+					.attr("transform", "translate(" + width / 2 + "," + ( height/2+25 )+ ")"); // Add 100 on Y translation, cause upper bars are longer
 				
 				
 				d3.csv("rehoTestData.csv", function(data) {
@@ -152,14 +153,14 @@
 						.innerRadius(innerRadius)
 						.outerRadius(function(d) { return y(d['Value']); })
 						.startAngle(function(d) { return x(d.indexKey); })
-						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .01; }) //Sets width of each bar
+						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .015; }) //Sets width of each bar
 						//.padAngle(0.01) //Puts space between each bar
 						.padRadius(innerRadius))
 				
 				});
 
 				var inter = setInterval(function() {
-                	updateData();
+                	//updateData();
 				}, 2000);
 				
 				// ** Update data section (Called from the onclick)
@@ -183,13 +184,11 @@
 				.selectAll("path")
 				.data(data)
 				.transition().duration(1500)
-					.attr("fill", "#black")
 					.attr("d", d3.arc()     // imagine your doing a part of a donut plot
 						.innerRadius(innerRadius)
 						.outerRadius(function(d) { return y(d['Value']); })
 						.startAngle(function(d) { return x(d.indexKey); })
-						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .01; }) //Sets width of each bar
-						//.padAngle(0.01) //Puts space between each bar
+						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .015; }) //Sets width of each bar
 						.padRadius(innerRadius))
 
 
