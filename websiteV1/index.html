@@ -1,12 +1,8 @@
 <!DOCTYPE html>
-<!--
-	Dimension by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+
 <html>
 	<head>
-		<title>Dimension by HTML5 UP</title>
+		<title>News</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -19,12 +15,9 @@
 
 				<!-- Header -->
 					<header id="header">
-						<div class="logo">
-							<span class="icon fa-gem"></span>
-						</div>
 						<div class="content">
 							<div class="inner">
-								<h1>Rehoboam</h1>
+								<h1>News Tracker</h1>
 								<div id="my_dataviz"></div>
 							</div>
 						</div>
@@ -98,7 +91,7 @@
 
 				<!-- Footer -->
 					<footer id="footer">
-						<p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+						<p class="copyright">&copy; Site Design by: <a href="https://html5up.net">HTML5 UP</a>.</p>
 					</footer>
 
 			</div>
@@ -159,7 +152,7 @@
 						.innerRadius(innerRadius)
 						.outerRadius(function(d) { return y(d['Value']); })
 						.startAngle(function(d) { return x(d.indexKey); })
-						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .007; }) //Sets width of each bar
+						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .01; }) //Sets width of each bar
 						//.padAngle(0.01) //Puts space between each bar
 						.padRadius(innerRadius))
 				
@@ -167,7 +160,7 @@
 
 				var inter = setInterval(function() {
                 	updateData();
-				}, 500);
+				}, 2000);
 				
 				// ** Update data section (Called from the onclick)
 				function updateData() {
@@ -189,13 +182,13 @@
 				svg
 				.selectAll("path")
 				.data(data)
-				.transition().duration(500)
+				.transition().duration(1500)
 					.attr("fill", "#black")
 					.attr("d", d3.arc()     // imagine your doing a part of a donut plot
 						.innerRadius(innerRadius)
 						.outerRadius(function(d) { return y(d['Value']); })
 						.startAngle(function(d) { return x(d.indexKey); })
-						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .007; }) //Sets width of each bar
+						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .01; }) //Sets width of each bar
 						//.padAngle(0.01) //Puts space between each bar
 						.padRadius(innerRadius))
 
