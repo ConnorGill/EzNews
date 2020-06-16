@@ -56,6 +56,7 @@
 								<h2 class="major">About</h2>
 								<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
 								<p>About.</p>
+								<p class="copyright">&copy; Site Design by: <a href="https://html5up.net">HTML5 UP</a>.</p>
 							</article>
 
 						<!-- Contact -->
@@ -93,7 +94,6 @@
 
 				<!-- Footer -->
 					<footer id="footer">
-						<p class="copyright">&copy; Site Design by: <a href="https://html5up.net">HTML5 UP</a>.</p>
 					</footer>
 
 			</div>
@@ -124,14 +124,14 @@
 				// append the svg object to the body of the page
 				var svg = d3.select("#my_dataviz")
 				.append("svg")
-				.attr("width", '100%')
-				.attr("height", '100%')
+				.attr("width", '60%')
+				.attr("height", '60%')
 				.attr('viewBox','0 0 '+Math.min(width,height)+' '+Math.min(width,height))
 				.attr('preserveAspectRatio','xMinYMin')
 				.append("g")
 				.attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
 				
-				d3.csv("rehoTestData.csv", function(data) {
+				d3.json("getdata.php", function(data) {
 				
 				// X scale
 				var x = d3.scaleBand()
@@ -153,9 +153,9 @@
 					.attr("fill", "#Black")
 					.attr("d", d3.arc()     // imagine your doing a part of a donut plot
 						.innerRadius(innerRadius)
-						.outerRadius(function(d) { return y(d['Value']); })
+						.outerRadius(function(d) { return y(d['radii']); })
 						.startAngle(function(d) { return x(d.indexKey); })
-						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .015; }) //Sets width of each bar
+						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .025; }) //Sets width of each bar
 						//.padAngle(0.01) //Puts space between each bar
 						.padRadius(innerRadius))
 				
@@ -163,12 +163,12 @@
 
 				var inter = setInterval(function() {
                 	updateData();
-				}, 2000);
+				}, 1000);
 				
 				// ** Update data section (Called from the onclick)
 				function updateData() {
 
-				d3.csv("rehoTestData.csv", function(data) {
+				d3.json("getdata.php", function(data) {
 
 				// X scale
 				var x = d3.scaleBand()
@@ -185,12 +185,12 @@
 				svg
 				.selectAll("path")
 				.data(data)
-				.transition().duration(1500)
+				.transition().duration(1000)
 					.attr("d", d3.arc()     // imagine your doing a part of a donut plot
 						.innerRadius(innerRadius)
-						.outerRadius(function(d) { return y(d['Value']); })
+						.outerRadius(function(d) { return y(d['radii']); })
 						.startAngle(function(d) { return x(d.indexKey); })
-						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .015; }) //Sets width of each bar
+						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .025; }) //Sets width of each bar
 						.padRadius(innerRadius))
 
 

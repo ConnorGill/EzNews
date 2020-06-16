@@ -17,12 +17,12 @@ def sql2csv():
     db = pymysql.connect("database-1.cluster-ro-cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
 
-    sql1 = "SELECT indexKey, radii FROM rehoboamSchema.vw_rehoboam LIMIT 1000"
+    sql1 = "SELECT indexKey, radii FROM rehoboamSchema.vw_rehoboam LIMIT 300"
     cursor.execute(sql1)
     result=cursor.fetchall()
 
     c = csv.writer(open('rehoTestData.csv', 'w', newline=''))
-    c.writerow(["indexKey", "Value"])
+    c.writerow(["indexKey", "radii"])
     for x in result:
         c.writerow(x) 
 
@@ -34,6 +34,6 @@ def sql2csv():
 count = 0
 while (count < 1000):
     radiiNoiseGen()
-    sql2csv()
+#    #sql2csv()
     count = count + 1
     print(count)
