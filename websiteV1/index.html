@@ -19,7 +19,6 @@
 						<div class="content">
 							<div class="inner">
 								<h1>News Tracker</h1>
-								<p>Only the most important and relevant news from the last month*</p>
 							</div>
 							<div id="my_dataviz"></div>
 						</div>
@@ -118,20 +117,20 @@
 				var margin = {top: 10, right: 10, bottom: 100, left: 10},
 					width = 540 - margin.left - margin.right,
 					height = 540 - margin.top - margin.bottom,
-					innerRadius = 150,
+					innerRadius = 160,
 					outerRadius = Math.min(width, height) / 2;   // the outerRadius goes from the middle of the SVG area to the border
 				
 				// append the svg object to the body of the page
 				var svg = d3.select("#my_dataviz")
 				.append("svg")
-				.attr("width", '60%')
-				.attr("height", '60%')
+				.attr("width", '90%')
+				.attr("height", '90%')
 				.attr('viewBox','0 0 '+Math.min(width,height)+' '+Math.min(width,height))
 				.attr('preserveAspectRatio','xMinYMin')
 				.append("g")
 				.attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
 				
-				d3.json("getdata.php", function(data) {
+				d3.json("getdata.json", function(data) {
 				
 				// X scale
 				var x = d3.scaleBand()
