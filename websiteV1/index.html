@@ -111,7 +111,46 @@
 			<!-- Function for radial charts -->
 			<script src="assets/js/d3-scale-radial.js"></script>
 
+			<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
 			<script>
+
+				// create a tooltip
+				var Tooltip = d3.select("#my_dataviz")
+					.append("div")
+					.style("opacity", 0)
+					.attr("class", "tooltip")
+					.style("background-color", "transparent")
+					.style("border-width", "2px")
+					.style("border-radius", "5px")
+					.style("padding", "5px")
+
+				// Three function that change the tooltip when user hover / move / leave a cell
+				var mouseover = function(d) {
+					if (d.source == "dummy")
+					{}
+					else 
+					{
+						Tooltip
+						.style("opacity", 1)
+						d3.select(this)
+						.style("stroke", "black")
+						.style("opacity", 1)
+					}	
+				}
+				var mousemove = function(d) {
+					Tooltip
+					.html("<strong>" + d.dateAdded + "</strong>" + "<br>" + d.headline)
+					.style("left", (d3.mouse(this)[0]+70) + "px")
+					.style("top", (d3.mouse(this)[1]) + "px")
+				}
+				var mouseleave = function(d) {
+					Tooltip
+					.style("opacity", 0)
+					d3.select(this)
+					.style("stroke", "none")
+					.style("opacity", 0.8)
+				}
 
 				// set the dimensions and margins of the graph
 				var margin = {top: 10, right: 10, bottom: 100, left: 10},
@@ -120,6 +159,8 @@
 					innerRadius = 160,
 					outerRadius = Math.min(width, height) / 2;   // the outerRadius goes from the middle of the SVG area to the border
 				
+				
+
 				// append the svg object to the body of the page
 				var svg = d3.select("#my_dataviz")
 				.append("svg")
@@ -130,7 +171,7 @@
 				.append("g")
 				.attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
 				
-				d3.json("getdata.json", function(data) {
+				d3.json("getdata.php", function(data) {
 				
 				// X scale
 				var x = d3.scaleBand()
@@ -150,13 +191,26 @@
 					.enter()
 					.append("path")
 					.attr("fill", "#Black")
-					.attr("d", d3.arc()     // imagine your doing a part of a donut plot
+					.attr("d", d3.arc()     
 						.innerRadius(innerRadius)
 						.outerRadius(function(d) { return y(d['radii']); })
 						.startAngle(function(d) { return x(d.indexKey); })
 						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .025; }) //Sets width of each bar
-						//.padAngle(0.01) //Puts space between each bar
 						.padRadius(innerRadius))
+						.on("mouseover", mouseover)
+    					.on("mousemove", mousemove)
+    					.on("mouseleave", mouseleave)
+						.on("dblclick", function(d){
+							if(d.siteurl == null)
+							{}
+							else
+							{
+								var win = window.open(d.siteurl, '_blank');
+								win.focus();
+								console.log(d.siteurl);
+							}
+
+							})
 				
 				});
 
@@ -191,8 +245,20 @@
 						.startAngle(function(d) { return x(d.indexKey); })
 						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .025; }) //Sets width of each bar
 						.padRadius(innerRadius))
-
-
+						.on("mouseover", mouseover)
+    					.on("mousemove", mousemove)
+    					.on("mouseleave", mouseleave)
+						.on("dblclick", function(d){
+							if(d.siteurl == null)
+							{}
+							else
+							{
+								var win = window.open(d.siteurl, '_blank');
+								win.focus();
+								console.log(d.siteurl);
+							}
+							
+							})
 
 				});
 				}

@@ -11,11 +11,11 @@ import random
 
 
 #Function that inserts data to sql
-def sqlInsert(storyID, indexKey, radii, headline, url, dateAdded):
+def sqlInsert(storyID, indexKey, radii, headline, siteurl, dateAdded):
     db = pymysql.connect("rehodb.cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
     sql1 = "INSERT INTO rehoboamSchema.rehoboamReal (storyID, indexKey, source, radii, headline, url, dateAdded, isActive) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    vals = (storyID, indexKey, "real", radii, headline, url, dateAdded, 1)
+    vals = (storyID, indexKey, "real", radii, headline, siteurl, dateAdded, 1)
     cursor.execute(sql1,vals)
     db.commit()
     db.close()
@@ -40,15 +40,15 @@ def genIndex():
     return indexKey
 
 #This function prepares the inforation for mySQL
-def newsToSQL(headline, url, dateAdded):
+def newsToSQL(headline, siteurl, dateAdded):
     
     indexKey = genIndex() #Calls function to generate Index
     storyID = (str(dateAdded) + "." + str(indexKey)) #Creates unique storyID
-    radii = random.randint(5000, 20000) #Random height for each story
-              #[storyID, indexKey, source, radii, headline, url, dateAdded, isActive]
-    sqlArray = [storyID, indexKey, "real", radii, headline, url, dateAdded, "TRUE"] #2D array that will be used to transfer data to mySQL
+    radii = random.randint(2500, 10000) #Random height for each story
+              #[storyID, indexKey, source, radii, headline, siteurl, dateAdded, isActive]
+    sqlArray = [storyID, indexKey, "real", radii, headline, siteurl, dateAdded, "TRUE"] #2D array that will be used to transfer data to mySQL
     print(sqlArray)
-    sqlInsert(storyID, indexKey, radii, headline, url, dateAdded)
+    sqlInsert(storyID, indexKey, radii, headline, siteurl, dateAdded)
 
 #This function finds the relevant information
 def getNewsData(tempHeadline, dateAdded):
@@ -59,9 +59,9 @@ def getNewsData(tempHeadline, dateAdded):
 
     source = soup.find("li", {"id": citeNote}).find("a", {"class": "external text"})    #Finds source
     headline = source.getText()[1:-1] 
-    url = source.get("href")
+    siteurl = source.get("href")
 
-    newsToSQL(headline, url, dateAdded) #Function that will insert data into database
+    newsToSQL(headline, siteurl, dateAdded) #Function that will insert data into database
 
 #Main function that initially parses HTML
 def parseHTML(dateAdded, wikiDate, soup):
@@ -95,14 +95,17 @@ dateAdded = datetime.date.today()
 month = dateAdded.strftime("%B")
 day = str(dateAdded.day)
 
-dateAdded = str(dateAdded)  #Cast to string for sql
+#dateAdded = str(dateAdded)  #Cast to string for sql
 wikiDate = (month + ' ' + day)  #Current date in wiki friendly format
 
 res = requests.get('https://en.wikipedia.org/wiki/2020')
 res.raise_for_status()
 soup = bs4.BeautifulSoup(res.text,"lxml")
 
-parseHTML(dateAdded, wikiDate, soup)
+today = datetime.datetime.now()
+#test = today.strftime("%m.%d.%Y")
+print(today)
+#parseHTML(dateAdded, wikiDate, soup)
 
 
 

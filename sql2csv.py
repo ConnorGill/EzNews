@@ -5,7 +5,8 @@ import csv
 def radiiNoiseGen():
     db = pymysql.connect("rehodb.cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
-    sql4 = ("UPDATE rehoboamSchema.rehoboamFull SET radii = FLOOR(RAND()*(8000-1000) + 1000) #END")
+    #NOTICE IT CURRENTLY CONNECTS TO REAL
+    sql4 = ("UPDATE rehoboamSchema.rehoboamReal SET radii = FLOOR(RAND()*(10000-2500) + 2500) #END")
     cursor.execute(sql4)
     db.commit()
     #sql2 = ("INSERT INTO `rehoboamSchema`.`rehoboamFull`(`source`,`radii`) VALUES('dummy',0);")
@@ -17,12 +18,12 @@ def sql2csv():
     db = pymysql.connect("rehodb.cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
 
-    sql1 = "SELECT indexKey, radii FROM rehoboamSchema.vw_rehoboam"
+    sql1 = "SELECT indexKey, radii, source, headline, siteurl FROM rehoboamSchema.vw_rehoboam"
     cursor.execute(sql1)
     result=cursor.fetchall()
 
     c = csv.writer(open('rehoTestData.csv', 'w', newline=''))
-    c.writerow(["indexKey", "radii"])
+    c.writerow(["indexKey", "radii", "source","headline", "siteurl"])
     for x in result:
         c.writerow(x) 
 

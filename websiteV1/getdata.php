@@ -5,7 +5,7 @@
    $query1="UPDATE rehoboamSchema.rehoboamFull SET RADII = FLOOR(RAND()*(1200-100) + 100) #END";
    $mysqli->query("$query1");
 
-   if ($result = $mysqli->query("SELECT indexKey, radii FROM rehoboamSchema.vw_rehoboam")) {
+   if ($result = $mysqli->query("SELECT indexKey, radii, source, headline, siteurl, DATE_FORMAT(dateAdded, '%m.%d.%y') as dateAdded FROM rehoboamSchema.vw_rehoboam")) {
    
        while($row = $result->fetch_array(MYSQLI_ASSOC)) {
                $myArray[] = $row;
