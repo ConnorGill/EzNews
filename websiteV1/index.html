@@ -18,7 +18,7 @@
 						
 						<div class="content">
 							<div class="inner">
-								<h1>News Tracker</h1>
+								<h1>EzeNews Tracker</h1>
 							</div>
 							<div id="my_dataviz"></div>
 						</div>
@@ -125,6 +125,9 @@
 					.style("border-radius", "5px")
 					.style("padding", "5px")
 					.style("position", "absolute")
+					.style("z-index", "10")
+					.style("width", "300px")
+					.style("text-align", "left")
 
 				// Three function that change the tooltip when user hover / move / leave a cell
 				var mouseover = function(d) {
@@ -135,17 +138,17 @@
 						Tooltip
 						.style("opacity", 1)
 						d3.select(this)
-						.style("stroke", "black")
+						.style("stroke", "white")
 						.style("opacity", 1)
 					}	
 				}
 				var mousemove = function(d) {
 					Tooltip
-					.html("<strong>" + d.dateAdded + "</strong>" + "<br>" + d.headline)
+					.html(d.dateAdded + "<br>"+"<strong>" + "DIVERGENCE:" + "</strong>" + "<br>" + d.headline)
 					//.style("left", (d3.mouse(this)[0]+70) + "px")
 					//.style("top", (d3.mouse(this)[1]) + "px")
-					.style("left", d3.event.pageX + "px")
-        			.style("top", d3.event.pageY + "px")
+					.style("left", (d3.event.pageX - 250) + "px")
+        			.style("top", (d3.event.pageY - 10) + "px")
 				}
 				var mouseleave = function(d) {
 					Tooltip
@@ -174,7 +177,7 @@
 				.append("g")
 				.attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
 				
-				d3.json("getdata.php", function(data) {
+				d3.json("getdata.json", function(data) {
 				
 				// X scale
 				var x = d3.scaleBand()
@@ -218,7 +221,7 @@
 				});
 
 				var inter = setInterval(function() {
-                	updateData();
+                	//updateData();
 				}, 1000);
 				
 				// ** Update data section (Called from the onclick)
