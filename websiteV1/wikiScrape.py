@@ -95,17 +95,14 @@ dateAdded = datetime.date.today()
 month = dateAdded.strftime("%B")
 day = str(dateAdded.day)
 
-#dateAdded = str(dateAdded)  #Cast to string for sql
+dateAdded = str(dateAdded)  #Cast to string for sql
 wikiDate = (month + ' ' + day)  #Current date in wiki friendly format
 
 res = requests.get('https://en.wikipedia.org/wiki/2020')
 res.raise_for_status()
 soup = bs4.BeautifulSoup(res.text,"lxml")
 
-today = datetime.datetime.now()
-#test = today.strftime("%m.%d.%Y")
-print(today)
-#parseHTML(dateAdded, wikiDate, soup)
+parseHTML(dateAdded, wikiDate, soup)
 
 
 
