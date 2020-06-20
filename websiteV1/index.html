@@ -4,7 +4,7 @@
 	<head>
 		<title>News</title>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
@@ -18,16 +18,15 @@
 						
 						<div class="content">
 							<div class="inner">
-								<h1>EzeNews Tracker</h1>
-								<p>Hover over a bar to view a headline.</p>
+								<h1>Ezekiel</h1>
 							</div>
 							<div id="my_dataviz"></div>
 						</div>
 						<nav>
 							<ul>
 								<li><a href="#about">About</a></li>
+								<li><a href="#how">How It Works</a></li>
 								<li><a href="#support">Support</a></li>
-								<li><a href="#contact">Contact</a></li>
 								<!--<li><a href="#elements">Elements</a></li>-->
 							</ul>
 						</nav>
@@ -40,24 +39,13 @@
 							<article id="about">
 								<h2 class="major">About</h2>
 								<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
-								<p>This site was created by <strong>Connor Gill</strong>. I am a CS graduate currently working in software development. This site was inspired by a certain futuristic, AI based, television show. One which I'm not quite sure I can legally name. </p>
-								<p>News information is sourced from Wikipedia. The stories are ordered by date in a counter clockwise order. </p>
-								<p class="copyright">&copy; HTML Design by: <a href="https://html5up.net">HTML5 UP</a>.</p>
-							</article>
-
-						<!-- Support -->
-						<article id="support">
-							<h2 class="major">Support</h2>
-							<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-							<p>Interesting in contributing to this site?</p>
-						</article>
-
-						<!-- Contact -->
-							<article id="contact">
-								<h2 class="major">Contact</h2>
-								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
-								<p>You can contact me at <strong> insert email</strong> or you can click on any of the social links below.</p>
-								<p>I am looking for web developers skilled in HTML, CSS, and Javascript to help me improve the site. If you are interested please reach out!</p>
+								<p>This site was created by <strong>Connor Gill</strong>. 
+									I am a CS graduate currently working in software development. 
+									This site was inspired by a certain futuristic, AI based, television show. 
+									One which I'm not quite sure I can legally name. </p>
+									<p>I am looking for web developers skilled in HTML, CSS, and Javascript to help me improve the site. If you are interested please reach out!</p>
+									<p>If you do want to reach out for any reason you can contact me here: insert email</p>
+								
 								<ul class="icons">
 									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
 									<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
@@ -65,6 +53,25 @@
 									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 								</ul>
 							</article>
+
+						<!-- How it Works -->
+						<article id="how">
+							<h2 class="major">How it Works</h2>
+							<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+							<p>"Ezekiel" is a system that displays only the biggest and most relevant news stories of the past few weeks. 
+								Simply hover(click on mobile) on a bar to see a story. A tooltip will pop up with a headline and a link to the source. 
+								"Ezekiel" will display ~40 stories at any given time. It is updated everyday. 
+								News information is sourced from Wikipedia. The stories are ordered by date in a counter clockwise order. </p>
+							<p>This site was designed using the d3.js library in conjuction with HTML, CSS, PHP, Javascript, and MySQL.</p>
+							<p class="copyright">&copy; HTML Design by: <a href="https://html5up.net">HTML5 UP</a>.</p>
+						</article>
+
+						<!-- Support -->
+						<article id="support">
+							<h2 class="major">Support</h2>
+							<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
+							<p>Interesting in contributing to this site?</p>
+						</article>
 
 					</div>
 
@@ -97,15 +104,19 @@
 					.append("div")
 					.style("opacity", 0)
 					.attr("class", "tooltip")
-					.style("background-color", "black")
+					.style("background-color", "none")
+					.style("color", "white")
 					.style("border-width", "2px")
 					.style("border-radius", "5px")
 					.style("padding", "5px")
-					.style("position", "absolute")
+					.style("position", "static")
 					.style("z-index", "10")
-					.style("width", "200px")
+					.style("width", "350px")
+					//.style("min-height", "100px")
+					.style("height", "80px")
 					//.style("margin", "auto")
 					.style("text-align", "left")
+					.style("font-size", "12px")
 
 				// Three function that change the tooltip when user hover / move / leave a cell
 				var mouseover = function(d) {
@@ -114,7 +125,7 @@
 					else 
 					{
 						Tooltip
-						.style("opacity", .7)
+						.style("opacity", 1)
 						d3.select(this)
 						.style("stroke", "white")
 						.style("opacity", 1)
@@ -160,14 +171,14 @@
 				// append the svg object to the body of the page
 				var svg = d3.select("#my_dataviz")
 				.append("svg")
-				.attr("width", '60%')
-				.attr("height", '60%')
+				.attr("width", '100%')
+				.attr("height", '100%')
 				.attr('viewBox','0 0 '+Math.min(width,height)+' '+Math.min(width,height))
 				.attr('preserveAspectRatio','xMinYMin')
 				.append("g")
 				.attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
 				
-				d3.json("getdata.json", function(data) {
+				d3.json("getdata.php", function(data) {
 				
 				// X scale
 				var x = d3.scaleBand()
@@ -196,7 +207,7 @@
 						.on("mouseover", mouseover)
     					.on("mousemove", mousemove)
     					.on("mouseleave", mouseleave)
-						.on("dblclick", function(d){
+						/*.on("dblclick", function(d){
 							if(d.siteurl == null)
 							{}
 							else
@@ -206,12 +217,31 @@
 								console.log(d.siteurl);
 							}
 
+							})*/
+				/*
+				// Add the labels
+				svg.append("g")
+					.selectAll("g")
+					.data(data)
+					.enter()
+					.append("g")
+						.attr("text-anchor", function(d) { return (x(d.indexKey) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
+						.attr("transform", function(d) { return "rotate(" + ((x(d.indexKey) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (y(d['radii'])+10) + ",0)"; })
+					.append("text")
+						.text(function(d){
+							if (d.source == "real")
+							{
+								return(d.dateAdded)
+							}
 							})
+						.attr("transform", function(d) { return (x(d.indexKey) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
+						.style("font-size", "11px")
+						.attr("alignment-baseline", "middle")*/
 				
 				});
 
 				var inter = setInterval(function() {
-                	//updateData();
+                	updateData();
 				}, 1000);
 				
 				// ** Update data section (Called from the onclick)
@@ -244,7 +274,7 @@
 						.on("mouseover", mouseover)
     					.on("mousemove", mousemove)
     					//.on("mouseleave", mouseleave)
-						.on("dblclick", function(d){
+						/*.on("dblclick", function(d){
 							if(d.siteurl == null)
 							{}
 							else
@@ -254,7 +284,7 @@
 								console.log(d.siteurl);
 							}
 							
-							})
+							})*/
 
 				});
 				}
