@@ -19,14 +19,14 @@
 						<div class="content">
 							<div class="inner">
 								<h1>EzeNews Tracker</h1>
+								<p>Hover over a bar to view a headline.</p>
 							</div>
 							<div id="my_dataviz"></div>
 						</div>
 						<nav>
 							<ul>
-								<li><a href="#intro">Intro</a></li>
-								<li><a href="#work">Work</a></li>
 								<li><a href="#about">About</a></li>
+								<li><a href="#support">Support</a></li>
 								<li><a href="#contact">Contact</a></li>
 								<!--<li><a href="#elements">Elements</a></li>-->
 							</ul>
@@ -35,52 +35,29 @@
 
 				<!-- Main -->
 					<div id="main">
-						
-						<!-- Intro -->
-							<article id="intro">
-								<h2 class="major">Intro</h2>
-								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
-								<p>Welcome.</p>
-							</article>
-
-						<!-- Work -->
-							<article id="work">
-								<h2 class="major">Work</h2>
-								<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-								<p>How it works?</p>
-							</article>
 
 						<!-- About -->
 							<article id="about">
 								<h2 class="major">About</h2>
 								<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
-								<p>About.</p>
-								<p class="copyright">&copy; Site Design by: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								<p>This site was created by <strong>Connor Gill</strong>. I am a CS graduate currently working in software development. This site was inspired by a certain futuristic, AI based, television show. One which I'm not quite sure I can legally name. </p>
+								<p>News information is sourced from Wikipedia. The stories are ordered by date in a counter clockwise order. </p>
+								<p class="copyright">&copy; HTML Design by: <a href="https://html5up.net">HTML5 UP</a>.</p>
 							</article>
+
+						<!-- Support -->
+						<article id="support">
+							<h2 class="major">Support</h2>
+							<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
+							<p>Interesting in contributing to this site?</p>
+						</article>
 
 						<!-- Contact -->
 							<article id="contact">
 								<h2 class="major">Contact</h2>
-								<form method="post" action="#">
-									<div class="fields">
-										<div class="field half">
-											<label for="name">Name</label>
-											<input type="text" name="name" id="name" />
-										</div>
-										<div class="field half">
-											<label for="email">Email</label>
-											<input type="text" name="email" id="email" />
-										</div>
-										<div class="field">
-											<label for="message">Message</label>
-											<textarea name="message" id="message" rows="4"></textarea>
-										</div>
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Send Message" class="primary" /></li>
-										<li><input type="reset" value="Reset" /></li>
-									</ul>
-								</form>
+								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+								<p>You can contact me at <strong> insert email</strong> or you can click on any of the social links below.</p>
+								<p>I am looking for web developers skilled in HTML, CSS, and Javascript to help me improve the site. If you are interested please reach out!</p>
 								<ul class="icons">
 									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
 									<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
@@ -126,7 +103,8 @@
 					.style("padding", "5px")
 					.style("position", "absolute")
 					.style("z-index", "10")
-					.style("width", "300px")
+					.style("width", "200px")
+					//.style("margin", "auto")
 					.style("text-align", "left")
 
 				// Three function that change the tooltip when user hover / move / leave a cell
@@ -136,26 +114,38 @@
 					else 
 					{
 						Tooltip
-						.style("opacity", 1)
+						.style("opacity", .7)
 						d3.select(this)
 						.style("stroke", "white")
 						.style("opacity", 1)
 					}	
 				}
 				var mousemove = function(d) {
-					Tooltip
-					.html(d.dateAdded + "<br>"+"<strong>" + "DIVERGENCE:" + "</strong>" + "<br>" + d.headline)
-					//.style("left", (d3.mouse(this)[0]+70) + "px")
-					//.style("top", (d3.mouse(this)[1]) + "px")
-					.style("left", (d3.event.pageX - 250) + "px")
-        			.style("top", (d3.event.pageY - 10) + "px")
+					if (d.source == "dummy")
+					{}
+					else{
+						Tooltip
+						.html(d.dateAdded + "<br>"+"<strong>" 
+							+ "DIVERGENCE:" + "</strong>" + "<br>" + d.headline
+							+ "  " + "<a target='_blank' href=" + d.siteurl + ">" + "[source]" +"</a>")
+						.style("left", d + "px")
+						//.style("top", (d3.mouse(this)[1]) + "px")
+						//.style("left", (d3.event.pageX - 250) + "px")
+						.style("top", (d3.event.pageY - 10) + "px")
+					}
+					
 				}
 				var mouseleave = function(d) {
-					Tooltip
-					.style("opacity", 0)
-					d3.select(this)
-					.style("stroke", "none")
-					.style("opacity", 0.8)
+					if (d.source == "dummy")
+					{}
+					else{
+						Tooltip
+						//.style("opacity", 0)
+						d3.select(this)
+						.style("stroke", "none")
+						.style("opacity", 0.8)
+					}
+					
 				}
 
 				// set the dimensions and margins of the graph
@@ -170,8 +160,8 @@
 				// append the svg object to the body of the page
 				var svg = d3.select("#my_dataviz")
 				.append("svg")
-				.attr("width", '90%')
-				.attr("height", '90%')
+				.attr("width", '60%')
+				.attr("height", '60%')
 				.attr('viewBox','0 0 '+Math.min(width,height)+' '+Math.min(width,height))
 				.attr('preserveAspectRatio','xMinYMin')
 				.append("g")
@@ -253,7 +243,7 @@
 						.padRadius(innerRadius))
 						.on("mouseover", mouseover)
     					.on("mousemove", mousemove)
-    					.on("mouseleave", mouseleave)
+    					//.on("mouseleave", mouseleave)
 						.on("dblclick", function(d){
 							if(d.siteurl == null)
 							{}
