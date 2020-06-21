@@ -2,7 +2,17 @@
 
 <html>
 	<head>
-		<title>News</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159547160-1"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-159547160-1');
+		</script>
+
+		<title>Ezekiel News</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -19,6 +29,7 @@
 						<div class="content">
 							<div class="inner">
 								<h1>Ezekiel</h1>
+								<p>Select a bar to view a headline</p>
 							</div>
 							<div id="my_dataviz"></div>
 						</div>
@@ -43,13 +54,10 @@
 									I am a CS graduate currently working in software development. 
 									This site was inspired by a certain futuristic, AI based, television show. 
 									One which I'm not quite sure I can legally name. </p>
-									<p>I am looking for web developers skilled in HTML, CSS, and Javascript to help me improve the site. If you are interested please reach out!</p>
-									<p>If you do want to reach out for any reason you can contact me here: insert email</p>
+									<p>If you do want to reach out for any reason you can contact me here: admin@eznewslive</p>
 								
 								<ul class="icons">
-									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 								</ul>
 							</article>
@@ -60,9 +68,9 @@
 							<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
 							<p>"Ezekiel" is a system that displays only the biggest and most relevant news stories of the past few weeks. 
 								Simply hover(click on mobile) on a bar to see a story. A tooltip will pop up with a headline and a link to the source. 
-								"Ezekiel" will display ~40 stories at any given time. It is updated everyday. 
-								News information is sourced from Wikipedia. The stories are ordered by date in a counter clockwise order. </p>
-							<p>This site was designed using the d3.js library in conjuction with HTML, CSS, PHP, Javascript, and MySQL.</p>
+								"Ezekiel" will display ~25 stories at any given time. It is updated everyday. 
+								News information is sourced from Wikipedia. The stories are ordered by date in a clockwise order. The newest and oldest stories are labeled on the chart.</p>
+							<p>This site was designed using the d3.js library in conjuction with HTML, CSS, PHP, Javascript, Python, and MySQL.</p>
 							<p class="copyright">&copy; HTML Design by: <a href="https://html5up.net">HTML5 UP</a>.</p>
 						</article>
 
@@ -71,6 +79,8 @@
 							<h2 class="major">Support</h2>
 							<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
 							<p>Interesting in contributing to this site?</p>
+							<p>I am looking for web developers skilled in HTML, CSS, and Javascript to help me improve the site. If you are interested please reach out!</p>
+							<p>Email: admin@eznews.live</p>
 						</article>
 
 					</div>
@@ -111,9 +121,9 @@
 					.style("padding", "5px")
 					.style("position", "static")
 					.style("z-index", "10")
-					.style("width", "350px")
+					.style("width", "360px")
 					//.style("min-height", "100px")
-					.style("height", "80px")
+					.style("height", "100px")
 					//.style("margin", "auto")
 					.style("text-align", "left")
 					.style("font-size", "12px")
@@ -197,28 +207,17 @@
 					.data(data)
 					.enter()
 					.append("path")
-					.attr("fill", "#Black")
+					.attr("fill", "black")
 					.attr("d", d3.arc()     
 						.innerRadius(innerRadius)
 						.outerRadius(function(d) { return y(d['radii']); })
 						.startAngle(function(d) { return x(d.indexKey); })
-						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .025; }) //Sets width of each bar
+						.endAngle(function(d) { return x(d.indexKey) + x.bandwidth() + .027; }) //Sets width of each bar
 						.padRadius(innerRadius))
 						.on("mouseover", mouseover)
     					.on("mousemove", mousemove)
     					.on("mouseleave", mouseleave)
-						/*.on("dblclick", function(d){
-							if(d.siteurl == null)
-							{}
-							else
-							{
-								var win = window.open(d.siteurl, '_blank');
-								win.focus();
-								console.log(d.siteurl);
-							}
-
-							})*/
-				/*
+				
 				// Add the labels
 				svg.append("g")
 					.selectAll("g")
@@ -226,17 +225,18 @@
 					.enter()
 					.append("g")
 						.attr("text-anchor", function(d) { return (x(d.indexKey) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
-						.attr("transform", function(d) { return "rotate(" + ((x(d.indexKey) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (y(d['radii'])+10) + ",0)"; })
+						.attr("transform", function(d) { return "rotate(" + ((x(d.indexKey) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (y(d['indexKey'])-80) + ",0)"; })
 					.append("text")
 						.text(function(d){
-							if (d.source == "real")
+							if (d.storyAge == "newest")
 							{
-								return(d.dateAdded)
+								return("Latest Story")
 							}
 							})
 						.attr("transform", function(d) { return (x(d.indexKey) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
-						.style("font-size", "11px")
-						.attr("alignment-baseline", "middle")*/
+						.style("font-size", "14px")
+						.style("font-weight", "bold")
+						.attr("alignment-baseline", "middle")
 				
 				});
 
@@ -274,17 +274,6 @@
 						.on("mouseover", mouseover)
     					.on("mousemove", mousemove)
     					//.on("mouseleave", mouseleave)
-						/*.on("dblclick", function(d){
-							if(d.siteurl == null)
-							{}
-							else
-							{
-								var win = window.open(d.siteurl, '_blank');
-								win.focus();
-								console.log(d.siteurl);
-							}
-							
-							})*/
 
 				});
 				}

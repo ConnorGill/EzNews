@@ -18,12 +18,12 @@ def sql2csv():
     db = pymysql.connect("rehodb.cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
     cursor = db.cursor()
 
-    sql1 = "SELECT indexKey, radii, source, headline, siteurl, dateAdded FROM rehoboamSchema.vw_rehoboam"
+    sql1 = "SELECT indexKey, radii, source, headline, siteurl, dateAdded, storyAge FROM rehoboamSchema.vw_rehoboam"
     cursor.execute(sql1)
     result=cursor.fetchall()
 
     c = csv.writer(open('rehoTestData.csv', 'w', newline=''))
-    c.writerow(["indexKey", "radii", "source","headline", "siteurl", "dateAdded"])
+    c.writerow(["indexKey", "radii", "source","headline", "siteurl", "dateAdded", "storyAge"])
     for x in result:
         c.writerow(x) 
 
