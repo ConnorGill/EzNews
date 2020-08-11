@@ -12,7 +12,7 @@ import random
 
 #Function that inserts data to sql
 def sqlInsert(storyID, indexKey, radii, headline, siteurl, dateAdded):
-    db = pymysql.connect("rehodb.cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
+    db = pymysql.connect("server", "user", "pass")
     cursor = db.cursor()
     sql1 = "INSERT INTO rehoboamSchema.rehoboamReal (storyID, indexKey, source, radii, headline, siteurl, dateAdded, isActive, storyAge) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     vals = (storyID, indexKey, "real", radii, headline, siteurl, dateAdded, 1, "newest")
@@ -23,7 +23,7 @@ def sqlInsert(storyID, indexKey, radii, headline, siteurl, dateAdded):
 
 #This function generates the index for each story
 def genIndex():
-    db = pymysql.connect("rehodb.cagxsdx2k0ey.us-east-2.rds.amazonaws.com", "admin", "rehoboam")
+    db = pymysql.connect("server", "user", "pass")
     cursor = db.cursor()
     #Change to sort by date added eventually
     sql1 = "SELECT storyID, indexKey FROM rehoboamSchema.rehoboamReal WHERE storyAge = 'oldest'"
