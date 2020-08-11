@@ -1,5 +1,5 @@
 <?php
-   $mysqli = new mysqli('rehodb.cagxsdx2k0ey.us-east-2.rds.amazonaws.com','admin','rehoboam');
+   $mysqli = new mysqli('server','user','pass');
    $myArray = array();
 
    $query1="UPDATE rehoboamSchema.rehoboamFull SET RADII = FLOOR(RAND()*(1200-100) + 100) #END";
